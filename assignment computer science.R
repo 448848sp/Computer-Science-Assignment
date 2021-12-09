@@ -15,7 +15,7 @@ library("cluster")
 library("factoextra")
 library("MLmetrics")
 
-
+#importing data from JSON file
 mydata <- fromJSON(file="C:/Users/sophi/OneDrive/Afbeeldingen/Documenten/Computer Science/Assignment Computer Science/TVs-all-merged.json")
 mydata
 new_list= list()
@@ -27,6 +27,7 @@ dfs <-lapply(new_list, data.frame, stringsAsFactors = FALSE)
 data.df <- rbindlist(dfs, fill=TRUE)
 summary(data.df)
 
+#Data cleaning in title variable
 data.df$title <- as.character(data.df$title)
 data.df$title <- tolower(data.df$title)
 data.df$title <- str_replace_all(data.df$title, '-inch', 'inch')
@@ -295,7 +296,7 @@ for(c in 1:nrow(dissimilarity)){
 
 
 
-#classification algorithm
+#classification algorithm with bootstrapping
 column_name<-c("P", "R", "F1-measure", "comp")
 grid_thresholds<- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
 classification_results<-as.data.frame(matrix(0, ncol = 4, nrow = 9))
