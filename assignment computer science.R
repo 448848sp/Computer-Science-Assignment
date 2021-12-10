@@ -177,10 +177,10 @@ averaged_bootstrapping<-bootstrapping_results/5
 averaged_bootstrapping[,4]<- averaged_bootstrapping[,4]/(0.5*1023*1022)
 
 
-PQ_plot<-plot(averaged_bootstrapping$comp,averaged_bootstrapping$P, type="l", col="black", lwd=1, xlab="Fraction of Comparisons", ylab="Pair Quality")
+PQ_plot<-plot(averaged_bootstrapping$comp,averaged_bootstrapping$PQ, type="l", col="black", lwd=1, xlab="Fraction of Comparisons", ylab="Pair Quality")
 f1_plot<-plot(averaged_bootstrapping$comp,averaged_bootstrapping$`F1*-measure`, type="l", col="black", lwd=1, xlab="Fraction of Comparisons", ylab="F1*-measure")
 averaged_bootstrapping[13,]<-c(0,1,0,1) 
-PC_plot<-plot(averaged_bootstrapping$comp,averaged_bootstrapping$R, type="l", col="black", lwd=1, xlab="Fraction of Comparisons", ylab="Pair Completeness")
+PC_plot<-plot(averaged_bootstrapping_pr$comp,averaged_bootstrapping_pr$PC, type="l", col="black", lwd=1, xlab="Fraction of Comparisons", ylab="Pair Completeness")
   
 
 
@@ -296,7 +296,7 @@ for(c in 1:nrow(dissimilarity)){
 
 
 
-#classification algorithm with bootstrapping
+#classification algorithm with bootstrapping without lsh
 column_name<-c("P", "R", "F1-measure", "comp")
 grid_thresholds<- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
 classification_results<-as.data.frame(matrix(0, ncol = 4, nrow = 9))
@@ -353,10 +353,11 @@ classification_results[th_chr,4]<-classification_results[th_chr,4]+count_ones
 
 
 classification_results_averaged<-classification_results/5
-classification_results_averaged[,4]<-classification_results_averaged[,4]/classification_results_averaged[10,4]
-plot(classification_results_averaged$comp,classification_results_averaged$`F1-measure`, col="black", lwd=1, xlab="Fraction of Comparisons", ylab="F1-measure")
-
-
-
+classification_results_averaged[,4]<-classification_results_averaged[,4]/max(classification_results_averaged[,4])
+cassification_results_averaged[order('comp'),]
+plot(classification_results_averaged$comp,classification_results_averaged$`F1-measure`, type="l", col="black", lwd=1, xlab="Fraction of Comparisons", ylab="F1-measure", ylim = c(0,0.20))
+ggplot(data=classification_results_averaged, aes(x=comp, y=`F1-measure`))+
+  geom_line()+ ylim(0,0.2) + labs(x="Fraction of comparisons") + theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                                                                                    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
 
 
